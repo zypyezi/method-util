@@ -38,3 +38,8 @@ export const isEmpty = (data, excludeZero = true, needTrim = false) => {
     }
     return !data
 }
+
+
+export const isEqual = () => {
+    
+}

@@ -45,8 +45,6 @@ export const downloadFileByUrl = (url, errMsg) => {
 }
 
 
-
-
 /**
  * 压缩图片，压缩结果图片格式为jpg
  * @quality 压缩质量 默认为0.8
@@ -143,6 +141,45 @@ export const compressImage = (file, quality = 0.8, type = 'blob') => {
     });
 }
 
+/**
+ *  将图片转化成base64
+ * @param {*} dataURL 
+ */
+
+ export const convertImgToBase64 = (url, callback, outputFormat) => { 
+    var canvas = document.createElement('CANVAS'), 
+    ctx = canvas.getContext('2d'), 
+    img = new Image; 
+    img.crossOrigin = 'Anonymous'; 
+    img.onload = function(){ 
+        canvas.height = img.height; 
+        canvas.width = img.width; 
+       ctx.drawImage(img,0,0);
+       var dataURL = canvas.toDataURL(outputFormat || 'image/png'); 
+       callback.call(this, dataURL); 
+       canvas = null;
+    };
+    img.src = url;
+}
+
+/**
+ * base64 转化成blob
+ * @param {*} base64Data 
+ */
+export const dataURItoBlob = (base64Data) => {
+    var byteString;
+    if (base64Data.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(base64Data.split(',')[1]);
+    else
+        byteString = unescape(base64Data.split(',')[1]);
+    var mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0];
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type: mimeString});
+}
+
 
 /**
  *  dataUrl 形式的文件转化为二进制buffer
@@ -179,3 +216,23 @@ export const arrayBufferToDataURL = (arrayBuffer, mimeType) => {
 
     return 'data:' + mimeType + ';base64,' + btoa(data);
 }
+
+
+// 给图片添加标题
+
+
+//
+
+
+/**
+ *  根据文件byte格式化文件大小
+ */
+export const computeFileSize = (size) => {
+    if (size < 1024) {
+        return size + 'B'
+    } else if (size < 1024 * 1024) {
+        return (size / 1024).toFixed(2) + 'KB'
+    } else {
+        return (size / 1024 / 1024).toFixed(2) + 'M'
+    }
+},

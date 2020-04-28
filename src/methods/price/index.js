@@ -52,13 +52,13 @@ export const getUpperMoney = (n) => {
  */
 export const formatMoney = (money, s = 2) => {
     let num = Number(money)
+    let isNegative = num < 0
 
     if (typeof num === 'number' && !isNaN(num)) {
         let times = Math.pow(10, s),
             des = num * times + 0.5
-
         des = parseInt(des, 10) / times
-        return des.toFixed(s)
+        return isNegative ? '-' + des.toFixed(s) :  des.toFixed(s)
     } else {
         return money
     }
@@ -71,7 +71,6 @@ export const formatMoney = (money, s = 2) => {
 export const formatMoneyByComma = (money) => {
     if (typeof money === 'number' && !isNaN(money)) {
         let tempMoney = formatMoney(money / 100)
-
         return (
             tempMoney.split('.')[0].replace(/\B(?=(?:\d{3})+\b)/g, ',') +
             '.' +
@@ -80,4 +79,22 @@ export const formatMoneyByComma = (money) => {
     } else {
         return money || 0
     }
+}
+
+
+/**
+ * 银行卡四位分割 11 2222 3333 4444
+ */
+export const formatBankCard = (bankcard) => {
+    return bankcard.replace(/\D/g, '').replace(/(....)(?=.)/g, '$1 ')
+}
+
+// 银行卡隐私模式显示   显示前四位和后四位  ，中间使用****
+export const formatBankCardBySecret = (bankcard) => {
+    let value = bankcard.replace(/\s/g,'')
+    if(value.length <=8){
+        return value
+    }
+    return value.slice(0,4) + '********' + value.splice(-4)
+    // return bankcard.replace(/\D/g, '').replace(/(?<=\d{4})\d+(?=\d{4})/g, '*****')   // 有兼容性问题
 }
