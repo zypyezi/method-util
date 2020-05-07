@@ -45,6 +45,14 @@ export const downloadFileByUrl = (url, errMsg) => {
 }
 
 
+
+
+// 下载一张图片 ， 非访问接口返回二进制流的形式，常见于前端生成的二维码下载
+export const downloadImage = () => {
+    
+}
+
+
 /**
  * 压缩图片，压缩结果图片格式为jpg
  * @quality 压缩质量 默认为0.8
@@ -235,4 +243,7 @@ export const computeFileSize = (size) => {
     } else {
         return (size / 1024 / 1024).toFixed(2) + 'M'
     }
-},
+}
+
+
+
