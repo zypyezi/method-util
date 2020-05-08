@@ -48,8 +48,27 @@ export const downloadFileByUrl = (url, errMsg) => {
 
 
 // 下载一张图片 ， 非访问接口返回二进制流的形式，常见于前端生成的二维码下载
-export const downloadImage = () => {
-    
+export const downloadImage = (url) => {
+    var canvas = document.createElement('CANVAS'), 
+    ctx = canvas.getContext('2d'), 
+    img = new Image; 
+    img.crossOrigin = 'Anonymous'
+    img.onload = function(){ 
+        canvas.height = img.height
+        canvas.width = img.width
+        ctx.drawImage(img,0,0)
+        var dataURL = canvas.toDataURL('image/png')
+         // qrid元素为 canvas 形式的
+        let image = new Image()
+        image.src = dataURL
+        let a_link = document.createElement('a')
+        a_link.href = image.src
+        a_link.download = '二维码'
+        a_link.click()
+    }
+    img.src = url
+
+   
 }
 
 
